@@ -1,85 +1,28 @@
-import React, { useEffect } from 'react';
-import { auth } from '@/libs/firebase/config';
-import { useAuth } from '../../contexts/AuthContext';
+import ConnectRoninWalletMobile from "@/components/ConnectRoninBtn";
+import { signIn, signOut, useSession } from "next-auth/react";
+import React from 'react';
 
 const Home: React.FC = () => {
-  const { user, loading, signInWithGoogle, signOut } = useAuth();
 
-  useEffect(() => {
-    if (user) {
-      const interval = setInterval(() => {
-        user.getIdToken(true) // Force refresh token every hour
-          .then((token) => {
-            console.log('Token refreshed:', token);
-          })
-          .catch((error) => {
-            console.error('Error refreshing token:', error);
-          });
-      }, 3600000); // 1 hour
+  const { data: session } = useSession()
 
-      return () => clearInterval(interval);
-    }
-  }, [user]);
-
-  if (loading) {
-    return <p>Loading...</p>;
+  if (session) {
+    return (
+      <>
+        Signed in as {session?.user?.email ?? session?.user?.address} <br />
+        <button onClick={() => signOut()}>Sign out</button>
+      </>
+    )
   }
-
   return (
-    <div>
-      {user ? (
-        <>
-          <p>Welcome, {user.displayName}</p>
-          <button onClick={signOut}>Sign Out</button>
-        </>
-      ) : (
-        <button onClick={signInWithGoogle}>Sign In with Google</button>
-      )}
+    <div className="flex flex-col space-y-4 max-w-sm mt-3">
+      Not signed in <br />
+      <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() => signIn("google")}>Sign in with Google</button>
+      <ConnectRoninWalletMobile />
     </div>
-  );
+  )
 }
 
 export default Home;
 
 
-// import { useAuthState } from 'react-firebase-hooks/auth'
-
-// import { useRouter } from 'next/navigation';
-// import { signOut } from 'firebase/auth';
-// import { auth } from '@/libs/firebase/config';
-// import { useEffect, useState } from 'react';
-
-// export default function Home() {
-//   const [user] = useAuthState(auth);
-//   const router = useRouter()
-//   const [userSession, setUserSession] = useState<boolean | null>(null);
-
-//   useEffect(() => {
-//     if (typeof window !== 'undefined') {
-//       const session = sessionStorage.getItem('user');
-      
-//       setUserSession(Boolean(userSession));
-//     }
-//   }, []);
-  
-//   console.log(Boolean(userSession));
-
-//   useEffect(() => {
-//     if (!user && !userSession) {
-//       router.push('/login')
-//     }
-//   }, [user, userSession, router]);
-
-//   console.log({ user })
-
-//   return (
-//     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-//       <button onClick={() => {
-//         signOut(auth)
-//         sessionStorage.removeItem('user')
-//       }}>
-//         Log out
-//       </button>
-//     </main>
-//   )
-// }

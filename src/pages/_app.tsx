@@ -1,18 +1,27 @@
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
-import { AuthProvider } from '../../contexts/AuthContext'
 import { ConfigProvider } from 'antd'
 import themeToken from '@/theme/themeConfig'
 import BasicLayout from '@/layout'
+import SessionWrapper from '@/components/SessionWrapper'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { type State, WagmiProvider } from 'wagmi'
+import { config } from '@/config'
+
+const queryClient = new QueryClient()
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <AuthProvider>
-      <ConfigProvider theme={themeToken}>
-        <BasicLayout>
-          <Component {...pageProps} />
-        </BasicLayout>
-      </ConfigProvider>
-    </AuthProvider>
+    <SessionWrapper>
+      <WagmiProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          <ConfigProvider theme={themeToken}>
+            <BasicLayout>
+              <Component {...pageProps} />
+            </BasicLayout>
+          </ConfigProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
+    </SessionWrapper>
   )
 }
