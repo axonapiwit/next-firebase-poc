@@ -8,6 +8,23 @@ const ConnectRoninWalletMobile = () => {
   const { signMessageAsync } = useSignMessage();
   const { data: session } = useSession();
 
+  const [roninAppLink, setRoninAppLink] = useState('');
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect if it's a mobile device
+  useEffect(() => {
+    const userAgent = navigator.userAgent
+    setIsMobile(/android/i.test(userAgent) || /iPhone|iPad|iPod/i.test(userAgent));
+  }, []);
+
+  useEffect(() => {
+    if (isConnected && address) {
+      // Construct a deep link for the Ronin wallet app on mobile
+      const mobileLink = `ronin://connect?address=${address}`;
+      setRoninAppLink(mobileLink);
+    }
+  }, [isConnected, address]);
+
   const handleLogin = async () => {
     if (!address) return;
 
@@ -24,7 +41,7 @@ const ConnectRoninWalletMobile = () => {
 
   return (
     <div className='flex flex-col gap-5'>
-      {connectors.map((connector) => (
+      {/* {connectors.map((connector) => (
         <button onClick={() => connect({ connector })}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           disabled={status === 'pending'}
@@ -33,13 +50,26 @@ const ConnectRoninWalletMobile = () => {
             ? 'Connecting...'
             : `Sign in with ${connector.name}`}
         </button>
-      ))}
+      ))} */}
 
-      <button onClick={handleLogin}
-        className="bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      >
-        Sign in with Ronin Wallet - Next Auth
-      </button>
+      {isMobile ? (
+        roninAppLink ? (
+          <button
+            onClick={() => {
+              window.location.href = roninAppLink;
+            }}
+            className="bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Open Ronin Wallet App
+          </button>
+        ) : (
+          <p>Loading mobile link...</p>
+        )
+      ) : (
+        <button onClick={handleLogin} className="bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Sign in with Ronin Wallet - Next Auth
+        </button>
+      )}
       {error && <p className="text-red-500 mt-2">{error.message}</p>}
     </div>
   );
