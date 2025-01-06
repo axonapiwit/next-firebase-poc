@@ -1,5 +1,5 @@
 
-import { wagmiAdapter, projectId } from '@/config'
+import { wagmiAdapter, projectId } from '@/config/wagmi'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createAppKit } from '@reown/appkit/react'
 import { ronin, saigon } from '@reown/appkit/networks'

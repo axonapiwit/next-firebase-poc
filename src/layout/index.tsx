@@ -106,7 +106,7 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
           <Content style={{ margin: '0 16px', marginLeft: collapsed ? 100 : 240 }}>
             {children}</Content>
           <Footer style={{ textAlign: 'center' }}>
-            Ant Design ©{new Date().getFullYear()} Created by Ant UED
+            Aont Design ©{new Date().getFullYear()} Created by Aont
           </Footer>
         </Layout>
       </Layout>

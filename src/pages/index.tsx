@@ -1,16 +1,18 @@
 
-import ConnectButton from "@/components/ConnectButton";
-import { useAppKitAccount } from "@reown/appkit/react";
+import ActionButtonList from "@/components/ActionButton";
+import '@reown/appkit-wallet-button/react'
+import InfoList from "@/components/InfoList";
+import { useAppKitAccount, useAppKitTheme } from "@reown/appkit/react";
 import { signIn, signOut, useSession } from "next-auth/react";
-import React from 'react';
+import Image from "next/image";
+import React, { useEffect } from 'react';
 import { useSignMessage } from "wagmi";
 
 const Home: React.FC = () => {
   const { data: session } = useSession()
   const { address, isConnected, caipAddress, status } = useAppKitAccount()
   const { signMessage } = useSignMessage()
-
-  console.log(address, isConnected, caipAddress, status);
+  const { themeMode } = useAppKitTheme()
 
   if (session) {
     return (
@@ -21,14 +23,21 @@ const Home: React.FC = () => {
     )
   }
   return (
-    <div className="flex flex-col space-y-4 max-w-sm mt-3">
-      Not signed in <br />
+    <div className="page-container">
       <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() => signIn("google")}>Sign in with Google</button>
-     {!isConnected && <ConnectButton />}
-     <button className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded" onClick={() => signMessage({ message: 'hello world' })}>Sign message</button>
-      {/* <ConnectRoninWalletMobile /> */}
-      {/* <ConnectRoninWalletMobile /> */}
+      Not signed in <br />
+      <h1 className="page-title">Ronin Wagmi Example</h1>
+
+      <div className="appkit-buttons-container">
+        <appkit-button />
+        <appkit-network-button  />
+        <appkit-wallet-button wallet="ronin" />
+      </div>
+
+      <ActionButtonList />
+      <InfoList />
     </div>
+
   )
 }
 
