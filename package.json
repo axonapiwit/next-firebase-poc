@@ -12,10 +12,12 @@
     "@ant-design/cssinjs": "^1.21.0",
     "@ant-design/icons": "^5.3.7",
     "@auth/firebase-adapter": "^2.7.4",
-    "@reown/walletkit": "^1.1.2",
+    "@reown/appkit": "^1.6.3",
+    "@reown/appkit-adapter-wagmi": "^1.6.3",
+    "@reown/appkit-wallet-button": "^1.6.3",
     "@sky-mavis/tanto-connect": "^0.0.15",
     "@sky-mavis/tanto-wagmi": "^0.0.6",
-    "@tanstack/react-query": "^5.62.10",
+    "@tanstack/react-query": "^5.62.15",
     "@types/node": "20.14.10",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
@@ -31,11 +33,13 @@
     "next": "14.2.5",
     "next-auth": "^4.24.11",
     "postcss": "8.4.39",
+    "qrcode.react": "^4.2.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-firebase-hooks": "^5.1.1",
     "tailwindcss": "3.4.4",
     "typescript": "5.5.3",
+    "viem": "^2.22.2",
     "wagmi": "^2.14.6"
   }
 }
