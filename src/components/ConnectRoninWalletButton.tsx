@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useConnect, useDisconnect, useAccount } from "wagmi";
 import { injected } from 'wagmi/connectors'
-import { config } from "@/config";
 
 enum ChainIds {
   RoninMainnet = 2020,
